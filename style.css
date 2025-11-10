@@ -1,0 +1,247 @@
+:root{
+  --bg-sky:#08192b;
+  --horizon:#0b2b45;
+  --ocean:#052a3a;
+  --accent-1:#2fb1ff;
+  --accent-2:#5a8eff;
+  --whale-dark:#0e3b5a;
+  --whale-mid:#186b9b;
+  --whale-light:#69c0ff;
+  --glass:rgba(255,255,255,0.03);
+  --text:#dfeefc;
+  --radius:12px;
+}
+
+/* Reset */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,var(--bg-sky) 0%, #05283a 60%, var(--ocean) 100%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Stage layout */
+.stage{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns: 1fr 320px;
+  gap:24px;
+  align-items:stretch;
+  padding:36px;
+  align-items:center;
+}
+
+/* Sky decorations */
+.sky{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(800px 300px at 10% 10%, rgba(90,142,255,0.06), transparent 8%),
+    radial-gradient(700px 250px at 90% 20%, rgba(47,177,255,0.04), transparent 8%);
+  z-index:0;
+}
+
+/* Ocean area (left column) */
+.ocean{
+  grid-column:1 / 2;
+  position:relative;
+  min-height:70vh;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding-bottom:6vh;
+  z-index:1;
+  overflow:hidden;
+}
+
+/* Waves */
+.wave{
+  position:absolute;
+  left:-10%;
+  width:120%;
+  height:20vh;
+  bottom:0;
+  background: radial-gradient(1000px 200px at 50% 0%, rgba(255,255,255,0.02), transparent 40%),
+              linear-gradient(180deg, rgba(255,255,255,0.02), transparent 60%);
+  transform:translateY(0);
+  opacity:0.9;
+}
+.wave-1{animation:waveMove 6s linear infinite; z-index:2; filter: blur(8px); opacity:0.85}
+.wave-2{height:14vh; bottom:-6vh; animation:waveMove 10s linear infinite reverse; opacity:0.6; filter: blur(6px);}
+
+/* Whale wrapper controls position and horizontal animation */
+.whale-wrap{
+  width:60%;
+  max-width:900px;
+  position:relative;
+  z-index:10;
+  pointer-events:none;
+}
+
+/* Whale basic geometry — layered elements for 3D look */
+.whale{
+  width:360px;
+  height:160px;
+  position:relative;
+  transform-style:preserve-3d;
+  transform-origin:center;
+  pointer-events:auto;
+  margin:0 auto;
+  will-change:transform;
+}
+
+/* body */
+.whale-body{
+  position:absolute;
+  left:0;
+  top:18px;
+  width:280px;
+  height:122px;
+  border-radius:80px 80px 60px 120px / 70px 70px 60px 100px;
+  background: linear-gradient(180deg, var(--whale-mid) 0%, var(--whale-dark) 60%);
+  box-shadow: 0 18px 40px rgba(2,6,23,0.6), inset 0 -10px 30px rgba(0,0,0,0.25);
+  transform:translateZ(30px) rotateY(-6deg);
+  overflow:visible;
+}
+
+/* soft highlight */
+.whale-gradient{
+  position:absolute; inset:8px 18px auto 18px; height:48px; border-radius:40px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
+  mix-blend-mode:overlay;
+}
+
+/* eye */
+.whale-eye{
+  position:absolute;
+  right:44px;
+  top:38px;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:#001219;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6), 0 0 0 4px rgba(255,255,255,0.03) inset;
+  transform:translateZ(24px);
+}
+
+/* blow (spout) */
+.whale-blow{
+  position:absolute;
+  left:40px;
+  top:-8px;
+  width:16px;
+  height:18px;
+  display:flex;
+  gap:6px;
+  align-items:flex-end;
+  transform-origin:center;
+}
+.whale-blow span{
+  display:block;
+  width:8px;
+  height:8px;
+  background:linear-gradient(180deg,var(--accent-1),var(--accent-2));
+  border-radius:50%;
+  opacity:0;
+  animation:blow 2.4s infinite;
+}
+.whale-blow span:nth-child(2){ animation-delay:0.12s }
+.whale-blow span:nth-child(3){ animation-delay:0.26s }
+
+/* tail */
+.whale-tail{
+  position:absolute;
+  right:-42px;
+  top:44px;
+  width:160px;
+  height:120px;
+  transform-origin:left center;
+  transform:translateZ(6px) rotateY(18deg);
+}
+.tail-fin{
+  position:absolute;
+  width:80px;
+  height:32px;
+  border-radius:36px 36px 8px 8px;
+  background:linear-gradient(180deg,var(--whale-dark),var(--whale-mid));
+  top:42px;
+  transform-origin:top center;
+  box-shadow:0 10px 20px rgba(2,6,23,0.5);
+}
+.tail-fin.left{ left:0; transform:rotate(-18deg) }
+.tail-fin.right{ right:0; transform:rotate(18deg) }
+
+/* fins */
+.whale-fin{position:absolute;width:84px;height:34px;background:linear-gradient(180deg,var(--whale-dark),var(--whale-mid));border-radius:28px;box-shadow:0 10px 20px rgba(2,6,23,0.45)}
+.fin-top{left:60px;top:20px;transform:rotate(-24deg);transform-origin:left center}
+.fin-bottom{left:90px;top:92px;transform:rotate(30deg);transform-origin:left center}
+
+/* subtle reflection */
+.whale::after{
+  content:"";
+  position:absolute;left:8px;right:8px;bottom:10px;height:16px;border-radius:80px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+}
+
+/* Animations */
+@keyframes waveMove {
+  0%{ transform:translateX(0) translateY(0) }
+  50%{ transform:translateX(-6%) translateY(-6px) }
+  100%{ transform:translateX(0) translateY(0) }
+}
+
+@keyframes tailSwing {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-28deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes swimBounce {
+  0% { transform: translateY(0) rotateZ(-2deg) }
+  50% { transform: translateY(-18px) rotateZ(2deg) }
+  100% { transform: translateY(0) rotateZ(-2deg) }
+}
+
+@keyframes blow {
+  0% { transform: translateY(0) scale(0.6); opacity:0 }
+  35% { opacity:1; transform: translateY(-26px) scale(1) }
+  100% { opacity:0; transform: translateY(-54px) scale(1.2) }
+}
+
+/* Applying animations */
+.whale {
+  animation: swimBounce 3.8s ease-in-out infinite;
+  will-change:transform;
+}
+
+/* separate tail animation (uses transform on tail container) */
+.whale-tail { animation: tailSwing 0.9s ease-in-out infinite; }
+
+/* place whale horizontally (JS will animate translateX for swim) */
+.whale-wrap { transform: translateX(-30vw); transition:transform 0.3s linear; }
+
+/* Controls sidebar */
+.controls{
+  grid-column:2 / 3;
+  align-self:start;
+  background:var(--card, rgba(255,255,255,0.02));
+  padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.5); max-width:320px;
+}
+.control-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+label{color:var(--text);font-weight:600}
+input[type=range]{flex:1}
+.btn{padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:transparent;color:var(--text);cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.note{color:var(--muted);font-size:13px;margin-top:6px}
+
+/* responsive */
+@media (max-width:980px){
+  .stage{grid-template-columns:1fr; padding:20px}
+  .controls{grid-column:1; margin-top:18px; max-width:100%}
+  .whale{width:300px;height:136px}
+}

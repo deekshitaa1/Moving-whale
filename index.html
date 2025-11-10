@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Moving Whale — 3D-Style Animation</title>
+  <meta name="description" content="3D-style animated moving whale using HTML, CSS and JavaScript. Day - 04 project add-on." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="stage" id="stage" aria-label="Animated whale scene">
+    <div class="sky"></div>
+
+    <div class="ocean">
+      <div class="wave wave-1"></div>
+      <div class="wave wave-2"></div>
+
+      <!-- whale wrapper (controls direction & position) -->
+      <div id="whaleWrap" class="whale-wrap">
+        <div class="whale" role="img" aria-label="Animated whale">
+          <div class="whale-body">
+            <div class="whale-gradient"></div>
+            <div class="whale-eye"></div>
+            <div class="whale-blow">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="whale-tail">
+            <div class="tail-fin left"></div>
+            <div class="tail-fin right"></div>
+          </div>
+
+          <div class="whale-fin fin-top"></div>
+          <div class="whale-fin fin-bottom"></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="controls" aria-label="Animation controls">
+      <div class="control-row">
+        <label for="speed">Speed</label>
+        <input id="speed" type="range" min="0" max="2" step="0.01" value="1" />
+      </div>
+      <div class="control-row">
+        <button id="directionBtn" class="btn">Reverse</button>
+        <button id="resetBtn" class="btn ghost">Reset</button>
+      </div>
+      <p class="note">Tip: Adjust speed and reverse direction to change the swim behavior.</p>
+    </aside>
+  </main>
+
+  <script src="script.js" type="module"></script>
+</body>
+</html>
